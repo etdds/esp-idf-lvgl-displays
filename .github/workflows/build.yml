@@ -1,0 +1,64 @@
+name: ESP-IDF component build
+
+on:
+  push:
+    branches: [ main ]
+    tags:
+      - "*"
+
+jobs:
+  build:
+    permissions:
+        contents: write
+    strategy:
+      matrix:
+        esp_idf_version: [v5.0.1, latest]
+        sdkconfig: [ttgo-s3]
+        example_path: [hello_world]
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
+
+    - name: Get binary name
+      run: | 
+        BINARY_NAME=${{ matrix.example_path }}-${{ matrix.sdkconfig }}-${{ matrix.esp_idf_version }}
+        echo "BINARY_NAME=$BINARY_NAME" >> $GITHUB_ENV
+    
+    - name: Set target
+      run: |
+        if [ "${{ matrix.sdkconfig }}.defaults" = "ttgo-s3.defaults" ]; then
+          echo "target=esp32s3" >> $GITHUB_ENV
+        fi
+      shell: bash
+
+    - name: Build ESP-IDF component
+      env:
+        IDF_SDKCONFIG_DEFAULTS: ${{ matrix.sdkconfig }}.defaults
+      uses: espressif/esp-idf-ci-action@v1
+      with:
+        esp_idf_version: ${{ matrix.esp_idf_version }}
+        target: ${{ env.target }}
+        path: examples/${{ matrix.example_path }}
+
+    - name: Rename binary
+      run: |
+        sudo cp examples/${{ matrix.example_path }}/build/*.elf examples/${{ matrix.example_path }}/build/${{ env.BINARY_NAME }}.elf
+      shell: bash
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ env.BINARY_NAME }} 
+        path: examples/${{ matrix.example_path }}/build/*.elf
+
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: |
+          examples/${{ matrix.example_path }}/build/${{ env.BINARY_NAME}}.elf

@@ -1,0 +1,9 @@
+## IDF Component Manager Manifest File
+dependencies:
+  ## Required IDF version
+  idf:
+    version: ">=5.0.0"
+  esp_lvgl_port: "~1.0.2"
+description: ESP IDF component for configuring and managing LVGL displays
+url: https://github.com/etdds/esp-idf-lvgl-displays.git
+version: 1.0.0

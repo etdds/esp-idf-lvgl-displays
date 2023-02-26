@@ -1,0 +1,79 @@
+
+menu "LVGL display configuration"
+
+    choice LVGL_DISPLAY_SELECTION
+        prompt "Display module"
+        default LVGL_DISPLAY_TDISPLAY_S3
+        help
+            Choose the active display to use for LVGL
+        config LVGL_DISPLAY_TDISPLAY_S3
+            bool "LilyGO T-Display-S3"
+    endchoice
+
+    config LVGL_DISPLAY_PIXEL_CLOCK
+        depends on LVGL_DISPLAY_TDISPLAY_S3
+        int "Pixel clock frequency (MHz)"
+        range 1 20
+        default 10
+        help
+            Set the pixel clock frequency for the 8080 parallel bus.
+
+    config LVGL_DISPLAY_DRAW_BUFF_LEN
+        depends on LVGL_DISPLAY_TDISPLAY_S3
+        int "Draw buffer length"
+        range 1 170
+        default 20
+        help
+            Set the number of horizontal lines used as a draw buffer. This value effects both LVGL draw
+            buffers, and the DMA transfer length. Higher values use more memory. Usually this value should
+            not be less than 20.
+
+    config LVGL_DISPLAY_MIRROR_X
+        depends on LVGL_DISPLAY_TDISPLAY_S3
+        bool "Mirror X orientation"
+        default n
+        help
+            Mirror X orientation on display.
+
+    config LVGL_DISPLAY_MIRROR_Y
+        depends on LVGL_DISPLAY_TDISPLAY_S3
+        bool "Mirror Y orientation"
+        default y
+        help
+            Mirror y orientation on display.
+
+    config LVGL_DISPLAY_TASK_PRIORITY
+        int "LVGL main task priority"
+        default 4
+        help
+           Set the FreeRTOS task priority for the LVGL main task.
+
+    config LVGL_DISPLAY_TASK_STACK
+        int "LVGL main task stack length"
+        default 4096
+        help
+           Set the FreeRTOS task stack for the LVGL main task.
+
+    config LVGL_DISPLAY_TASK_AFFINITY
+        int "LVGL main task affinity"
+        default -1
+        range -1 1
+        help
+           Set the task affinity for the LVGL main task. Determines which core the task is tied to.
+           -1 sets either core.
+
+    config LVGL_DISPLAY_TASK_MAX_SLEEP
+        int "LVGL main task maximum sleep (ms)"
+        default 500
+        range 0 5000 
+        help
+            Set the maximum sleep time for the main LVGL task, in milliseconds.
+
+    config LVGL_DISPLAY_TIMER_PERIOD
+        int "LVGL timer period (ms)"
+        default 5
+        range 0 5000 
+        help
+            Set the period for the LVGL timer in milliseconds.
+
+endmenu  # LVGL display configuration
