@@ -20,6 +20,14 @@ menu "LVGL display configuration"
         help
             Set the pixel clock frequency for the 8080 parallel bus.
 
+    config LVGL_DISPLAY_SPI_CLOCK
+        depends on LVGL_DISPLAY_TTGO_TDISPLAY
+        int "SPI clock frequency (MHz)"
+        range 1 40
+        default 20
+        help
+            Set the SPI clock frequency
+
     config LVGL_DISPLAY_DRAW_BUFF_LEN
         depends on LVGL_DISPLAY_TDISPLAY_S3 || LVGL_DISPLAY_TTGO_TDISPLAY
         int "Draw buffer length"
