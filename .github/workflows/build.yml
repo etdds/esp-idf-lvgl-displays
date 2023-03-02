@@ -54,16 +54,24 @@ jobs:
         path: examples/${{ matrix.example_path }}
         target: ${{ env.TARGET }}
 
+    - name: Create single binary
+      uses: espressif/esp-idf-ci-action@v1
+      with:
+        esp_idf_version: ${{ matrix.esp_idf_version }}
+        path: examples/${{ matrix.example_path }}/build
+        target: ${{ env.TARGET }}
+        command: esptool.py --chip ${{ env.TARGET }} merge_bin -o merged.bin @flash_args
+
     - name: Rename binary
       run: |
-        sudo cp examples/${{ matrix.example_path }}/build/*.elf examples/${{ matrix.example_path }}/build/${{ env.BINARY_NAME }}.elf
+        sudo cp examples/${{ matrix.example_path }}/build/merged.bin examples/${{ matrix.example_path }}/build/${{ env.BINARY_NAME }}.bin
       shell: bash
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
         name: ${{ env.BINARY_NAME }} 
-        path: examples/${{ matrix.example_path }}/build/*.elf
+        path: examples/${{ matrix.example_path }}/build/*.bin
 
     - name: Release
       uses: softprops/action-gh-release@v1
