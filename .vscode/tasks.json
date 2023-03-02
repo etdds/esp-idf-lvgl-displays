@@ -2,14 +2,12 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build - Hello World (ttgo-s3)",
+            "label": "Build - Hello World",
             "type": "shell",
             "command": "${config:idf.pythonBinPath} ${config:idf.espIdfPath}/tools/idf.py build -C examples/hello_world",
             "options": {
                 "env": {
                     "PATH": "${env:PATH}:${config:idf.customExtraPaths}",
-                    "IDF_SDKCONFIG_DEFAULTS": "ttgo-s3.defaults",
-                    "IDF_TARGET": "esp32s3"
                 }
             },
             "problemMatcher": [
@@ -47,6 +45,46 @@
             }
         },
         {
+            "label": "Configure - Hello World (ttgo-tdisplay)",
+            "type": "shell",
+            "command": "rm sdkconfig* && cp ttgo-tdisplay.defaults sdkconfig.defaults && idf.py set-target esp32",
+            "options": {
+                "cwd": "${workspaceRoot}/examples/hello_world"
+            },
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": "absolute",
+                "pattern": {
+                    "regexp": "^(.*):(//d+):(//d+)://s+(warning|error)://s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            }
+        },
+        {
+            "label": "Configure - Hello World (ttgo-s3)",
+            "type": "shell",
+            "command": "rm sdkconfig* && cp ttgo-s3.defaults sdkconfig.defaults && idf.py set-target esp32s3",
+            "options": {
+                "cwd": "${workspaceRoot}/examples/hello_world"
+            },
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": "absolute",
+                "pattern": {
+                    "regexp": "^(.*):(//d+):(//d+)://s+(warning|error)://s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            }
+        },
+        {
             "label": "Set ESP-IDF Target",
             "type": "shell",
             "command": "${command:espIdf.setTarget}",
@@ -62,6 +100,39 @@
                     "message": 5
                 }
             }
+        },
+        {
+            "label": "Menuconfig - Hello World (any)",
+            "type": "shell",
+            "command": "idf.py -C examples/hello_world menuconfig ",
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": "absolute",
+                "pattern": {
+                    "regexp": "^(.*):(//d+):(//d+)://s+(warning|error)://s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            }
+        },
+        {
+            "label": "Pristine - Hello World (any)",
+            "type": "shell",
+            "command": "rm",
+            "args": [
+                "-rf",
+                "examples/hello_world/build",
+                "examples/hello_world/sdkconfig",
+                "examples/hello_world/sdkconfig.old",
+                "examples/hello_world/dependencies.lock",
+                "examples/hello_world/managed_components"
+            ],
+            "problemMatcher": [
+                "$espIdf"
+            ]
         },
         {
             "label": "Clean - Hello World (any)",
