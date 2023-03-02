@@ -1,8 +1,8 @@
 # This file was generated using idf.py save-defconfig. It can be edited manually.
 # Espressif IoT Development Framework (ESP-IDF) Project Minimal Configuration
 #
-CONFIG_ESPTOOLPY_FLASHSIZE_16MB=y
 CONFIG_LVGL_DISPLAY_TTGO_TDISPLAY=y
+CONFIG_LVGL_DISPLAY_SPI_CLOCK=40
 CONFIG_LVGL_DISPLAY_MIRROR_X=y
 # CONFIG_LVGL_DISPLAY_MIRROR_Y is not set
 CONFIG_LV_COLOR_16_SWAP=y
