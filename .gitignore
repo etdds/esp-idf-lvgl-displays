@@ -1,5 +1,6 @@
 examples/**/build
 examples/**/sdkconfig
+examples/**/sdkconfig.defaults
 examples/**/dependencies.lock
 examples/**/managed_components
 .vscode/settings.json

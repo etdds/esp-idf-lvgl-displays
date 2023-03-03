@@ -64,6 +64,7 @@ extern "C" void app_main(void) {
 | Board | Display Interface | Display Controller | Link |
 |----------|----------|----------|----------|
 | LilyGO T-Display-S3 | Intel 8080 | ST7789 | https://www.lilygo.cc/products/t-display-s3 |
+| LilyGO TTGO-TDisplay| SPI | ST7789 |https://www.lilygo.cc/products/lilygo%C2%AE-ttgo-t-display-1-14-inch-lcd-esp32-control-board  |
 
 # Configuration
 
@@ -72,8 +73,10 @@ The display used by LVGL is chosen and configured by Kconfig. When using the ESP
 | Option                      | Default value | Range   | Description                                                                                                                          |
 |-----------------------------|---------------|---------|--------------------------------------------------------------------------------------------------------------------------------------|
 | `LVGL_DISPLAY_TDISPLAY_S3`  | `y`           |         | Select LilyGO T-Display-S3 display module                                                                                            |
+| `LVGL_DISPLAY_TTGO_TDISPLAY`  | `n`           |         | Select LilyGO TTGO-tdisplay display module                                                                                            |
 | `LVGL_DISPLAY_PIXEL_CLOCK`  | `10`          | `1-20`  | Set the pixel clock frequency for the 8080 parallel bus.                                                                              |
 | `LVGL_DISPLAY_DRAW_BUFF_LEN`| `20`          | `1-170` | Set the number of horizontal lines used as a draw buffer. Higher values use more memory. Usually this value should not be less than 20.|
+| `LVGL_DISPLAY_SPI_CLOCK`  | `20`          | `1-40`  | Set the SPI clock frequency for SPI based controllers bus.                                                                              |
 | `LVGL_DISPLAY_MIRROR_X`     | `n`           |         | Mirror X orientation on display                                                                                                      |
 | `LVGL_DISPLAY_MIRROR_Y`     | `y`           |         | Mirror Y orientation on display                                                                                                      |
 | `LVGL_DISPLAY_TASK_PRIORITY`| `4`           |         | Set the FreeRTOS task priority for the LVGL main task.                                                                               |
@@ -121,20 +124,23 @@ To build an example:
 # Clone the repository:
 git clone https://github.com/etdds/esp-idf-lvgl-displays.git
 
-# Build the `hello_world` example for TTGO T-display S3:
-export IDF_TARGET=esp32s3 && export IDF_SDKCONFIG_DEFAULTS=ttgo-s3.defaults &&  idf.py build -C examples/hello_world
+# Configure for tdiplay-s3, using the 'hello world' example
+cd examples/hello_world && rm -f sdkconfig* && cp tdisplay-s3.defaults sdkconfig.defaults && idf.py set-target esp32s3
+# OR
+
+# Configure for ttgo-tdiplay, using the 'hello world' example
+cd examples/hello_world && rm -f sdkconfig* && cp ttgo-tdisplay.defaults sdkconfig.defaults && idf.py set-target esp32
+
+# Build the example (from the examples/hello_world directory)
+idf.py build
 
 # Flash
-idf.py -p (PORT) -C examples/hello_world
+idf.py -p (PORT) 
 
 # Clean
-idf.py fullclean -C examples/hello_world
+idf.py fullclean
 ```
 
 # Credits
 
 This component is an amalgamation of [espressif/esp_lvgl_port](https://components.espressif.com/components/espressif/esp_lvgl_port) and [LVGL](https://docs.lvgl.io/8.3/index.html)
-
-
-
-

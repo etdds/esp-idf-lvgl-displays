@@ -8,6 +8,8 @@ menu "LVGL display configuration"
             Choose the active display to use for LVGL
         config LVGL_DISPLAY_TDISPLAY_S3
             bool "LilyGO T-Display-S3"
+        config LVGL_DISPLAY_TTGO_TDISPLAY
+            bool "LilyGO TTGO T-Display"
     endchoice
 
     config LVGL_DISPLAY_PIXEL_CLOCK
@@ -18,8 +20,16 @@ menu "LVGL display configuration"
         help
             Set the pixel clock frequency for the 8080 parallel bus.
 
+    config LVGL_DISPLAY_SPI_CLOCK
+        depends on LVGL_DISPLAY_TTGO_TDISPLAY
+        int "SPI clock frequency (MHz)"
+        range 1 40
+        default 20
+        help
+            Set the SPI clock frequency
+
     config LVGL_DISPLAY_DRAW_BUFF_LEN
-        depends on LVGL_DISPLAY_TDISPLAY_S3
+        depends on LVGL_DISPLAY_TDISPLAY_S3 || LVGL_DISPLAY_TTGO_TDISPLAY
         int "Draw buffer length"
         range 1 170
         default 20
@@ -29,14 +39,14 @@ menu "LVGL display configuration"
             not be less than 20.
 
     config LVGL_DISPLAY_MIRROR_X
-        depends on LVGL_DISPLAY_TDISPLAY_S3
+        depends on LVGL_DISPLAY_TDISPLAY_S3 || LVGL_DISPLAY_TTGO_TDISPLAY
         bool "Mirror X orientation"
         default n
         help
             Mirror X orientation on display.
 
     config LVGL_DISPLAY_MIRROR_Y
-        depends on LVGL_DISPLAY_TDISPLAY_S3
+        depends on LVGL_DISPLAY_TDISPLAY_S3 || LVGL_DISPLAY_TTGO_TDISPLAY
         bool "Mirror Y orientation"
         default y
         help

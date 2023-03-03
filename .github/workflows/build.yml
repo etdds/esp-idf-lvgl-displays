@@ -2,18 +2,19 @@ name: ESP-IDF component build
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, feature/* ]
     tags:
       - "*"
 
 jobs:
   build:
+    timeout-minutes: 30
     permissions:
         contents: write
     strategy:
       matrix:
         esp_idf_version: [v5.0.1, latest]
-        sdkconfig: [ttgo-s3]
+        sdkconfig: [ttgo-s3, ttgo-tdisplay]
         example_path: [hello_world]
 
     runs-on: ubuntu-latest
@@ -28,33 +29,49 @@ jobs:
       run: | 
         BINARY_NAME=${{ matrix.example_path }}-${{ matrix.sdkconfig }}-${{ matrix.esp_idf_version }}
         echo "BINARY_NAME=$BINARY_NAME" >> $GITHUB_ENV
-    
+
     - name: Set target
       run: |
         if [ "${{ matrix.sdkconfig }}.defaults" = "ttgo-s3.defaults" ]; then
-          echo "target=esp32s3" >> $GITHUB_ENV
+          echo "TARGET=esp32s3" >> $GITHUB_ENV
+        else
+          echo "TARGET=esp32" >> $GITHUB_ENV
         fi
       shell: bash
 
-    - name: Build ESP-IDF component
-      env:
-        IDF_SDKCONFIG_DEFAULTS: ${{ matrix.sdkconfig }}.defaults
+    - name: Set configuration
       uses: espressif/esp-idf-ci-action@v1
       with:
         esp_idf_version: ${{ matrix.esp_idf_version }}
-        target: ${{ env.target }}
         path: examples/${{ matrix.example_path }}
+        target: ${{ env.TARGET }}
+        command: rm -f sdkconfig* && cp ${{ matrix.sdkconfig }}.defaults sdkconfig.defaults && idf.py set-target ${{ env.TARGET}}
+
+    - name: Build ESP-IDF component
+      uses: espressif/esp-idf-ci-action@v1
+      with:
+        esp_idf_version: ${{ matrix.esp_idf_version }}
+        path: examples/${{ matrix.example_path }}
+        target: ${{ env.TARGET }}
+
+    - name: Create single binary
+      uses: espressif/esp-idf-ci-action@v1
+      with:
+        esp_idf_version: ${{ matrix.esp_idf_version }}
+        path: examples/${{ matrix.example_path }}/build
+        target: ${{ env.TARGET }}
+        command: esptool.py --chip ${{ env.TARGET }} merge_bin -o merged.bin @flash_args
 
     - name: Rename binary
       run: |
-        sudo cp examples/${{ matrix.example_path }}/build/*.elf examples/${{ matrix.example_path }}/build/${{ env.BINARY_NAME }}.elf
+        sudo cp examples/${{ matrix.example_path }}/build/merged.bin examples/${{ matrix.example_path }}/build/${{ env.BINARY_NAME }}.bin
       shell: bash
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
         name: ${{ env.BINARY_NAME }} 
-        path: examples/${{ matrix.example_path }}/build/*.elf
+        path: examples/${{ matrix.example_path }}/build/*.bin
 
     - name: Release
       uses: softprops/action-gh-release@v1
