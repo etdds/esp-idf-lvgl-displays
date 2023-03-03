@@ -17,8 +17,13 @@ void create_hello_world() {
   // once the lock goes out of scope.
   auto lock = LVGLDisplay::Lock();
 
-  // Set the background color of the screen to a dark blue (#003a57)
-  lv_obj_set_style_bg_color(lv_scr_act(), lv_color_hex(0x003a57), LV_PART_MAIN);
+  // Set the background color of the screen to a black.
+  lv_obj_set_style_bg_color(lv_scr_act(), lv_color_hex(0x000000), LV_PART_MAIN);
+
+  // Add a red border around the edge of the screen to help set offsets.
+  lv_obj_set_style_border_color(lv_scr_act(), lv_color_hex(0xFF00000), LV_PART_MAIN);
+  lv_obj_set_style_border_width(lv_scr_act(), 1, LV_PART_MAIN);
+  
 
   // Create a label object with the text "Hello world"
   lv_obj_t* label = lv_label_create(lv_scr_act());
