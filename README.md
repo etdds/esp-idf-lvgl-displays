@@ -119,7 +119,15 @@ git submodule add https://github.com/etdds/esp-idf-lvgl-displays.git compoments/
 
 # Adding additional baords:
 
-TODO
+1. Add the display driver which implements `include/display.hpp : Display`
+2. Add a static instance to `display_factory.cpp`
+3. Add a guarded entry to `CMakelists.txt`
+4. Add Kconfig options
+5. Add display information and any additional configuration to `README.md`
+6. Add default configuration to each example.
+7. Add build configuration to `.vscode/tasks.json`
+8. Add github action target.
+
 
 # Examples
 
