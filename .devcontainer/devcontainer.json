@@ -9,7 +9,8 @@
 	"extensions": [
 		"ms-vscode.cpptools",
 		"espressif.esp-idf-extension",
-		"xaver.clang-format"
+		"xaver.clang-format",
+		"mhutchie.git-graph"
 	],
 	"workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/esp-idf-lvgl-displays,type=bind",
 	/* the path of workspace folder to be opened after container is running

@@ -12,6 +12,7 @@ RUN apt-get update \
   libpixman-1-0 \
   linux-tools-virtual \
   clang-format \
+  jq \
   ranger \
   vim \
   && rm -rf /var/lib/apt/lists/*
