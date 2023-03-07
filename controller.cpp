@@ -68,6 +68,10 @@ namespace LVGLDisplay {
   Controller::Controller() : _display(DisplayFactory::active_display()) {}
 
   Lock::Lock() { lvgl_port_lock(0); }
+  
+  void Lock::acquire() { lvgl_port_lock(0); }
+
+  void Lock::release() { lvgl_port_unlock(); }
 
   Lock::~Lock() { lvgl_port_unlock(); }
 

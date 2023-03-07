@@ -56,6 +56,18 @@ namespace LVGLDisplay {
     Lock();
 
     /**
+     * @brief Acquires the lock for the display.
+     * This should be used before any LVGL operation
+     */
+    static void acquire();
+
+    /**
+     * @brief Releases the lock for the display.
+     * This should be used before any LVGL operation
+     */
+    static void release();
+
+    /**
      * @brief Releases the lock for the display.
      */
     ~Lock();

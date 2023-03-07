@@ -7,16 +7,20 @@ LVGL Display Drivers for ESP IDF is available as an ESP IDF component, and can b
 # Example Usage
 
 ```c++
-#include "esp_system.h"
-#include <controller.hpp>
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
+#include <lvgl.h>
 #include <stdio.h>
 
-#include <lvgl.h>
+#include <controller.hpp>
+
+#include "esp_system.h"
 
 // Get an instance of the LVGL Display Controller
 constexpr auto Display = LVGLDisplay::Controller::instance;
+
+// The screen label to change.
+lv_obj_t* label;
 
 // Function to create a "Hello World" label on the display
 void create_hello_world() {
@@ -25,7 +29,7 @@ void create_hello_world() {
   // once the lock goes out of scope.
   auto lock = LVGLDisplay::Lock();
 
-    // Set the background color of the screen to a black.
+  // Set the background color of the screen to a black.
   lv_obj_set_style_bg_color(lv_scr_act(), lv_color_hex(0x000000), LV_PART_MAIN);
 
   // Add a red border around the edge of the screen to help set offsets.
@@ -35,8 +39,8 @@ void create_hello_world() {
 
 
   // Create a label object with the text "Hello world"
-  lv_obj_t *label = lv_label_create(lv_scr_act());
-  lv_label_set_text(label, "Hello world");
+  label = lv_label_create(lv_scr_act());
+  lv_label_set_text(label, "");
 
   // Set the text color to white
   lv_obj_set_style_text_color(lv_scr_act(), lv_color_hex(0xffffff), LV_PART_MAIN);
@@ -57,10 +61,21 @@ extern "C" void app_main(void) {
   // Create a "Hello World" label on the display
   create_hello_world();
 
+  size_t seconds = 0;
+  char text[32] = "";
+
   // Loop forever
-  while (1) {
+  while(1) {
+    snprintf(text, 32, "Hello world %u", seconds++);
+
+    // Update the display with the current elapsed seconds.
+    // Use a static lock, which does not rely on scope.
+    LVGLDisplay::Lock::acquire();
+    lv_label_set_text(label, text);
+    LVGLDisplay::Lock::release();
+
     // Delay the task for 1000ms (1 second)
-    vTaskDelay(1000);
+    vTaskDelay(pdMS_TO_TICKS(1000));
   }
 }
 ```
@@ -100,8 +115,6 @@ Add to your main `idf_component.yml` file, under dependencies.
 ```yaml
 dependencies:
   esp-idf-lvgl-displays:
-    version: ">=1.0.0"
-    path: esp-idf-lvgl-displays
     git: https://github.com/etdds/esp-idf-lvgl-displays.git
 ```
 
