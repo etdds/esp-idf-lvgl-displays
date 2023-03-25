@@ -2,7 +2,7 @@ name: ESP-IDF component build
 
 on:
   push:
-    branches: [ main, feature/* ]
+    branches: [ main, feature/*, develop ]
     tags:
       - "*"
 
