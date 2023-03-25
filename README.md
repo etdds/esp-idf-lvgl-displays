@@ -121,13 +121,13 @@ dependencies:
 # Direct component
 Add the repository as a standard IDF component.
 ```
-git clone https://github.com/etdds/esp-idf-lvgl-displays.git compoments/esp-idf-lvgl-displays
+git clone https://github.com/etdds/esp-idf-lvgl-displays.git components/esp-idf-lvgl-displays
 ```
 
 # Submodule component
 Add the repository as a standard IDF component.
 ```
-git submodule add https://github.com/etdds/esp-idf-lvgl-displays.git compoments/esp-idf-lvgl-displays
+git submodule add https://github.com/etdds/esp-idf-lvgl-displays.git components/esp-idf-lvgl-displays
 ```
 
 # Adding additional baords:
