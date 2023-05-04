@@ -15,10 +15,10 @@ menu "LVGL display configuration"
     config LVGL_DISPLAY_PIXEL_CLOCK
         depends on LVGL_DISPLAY_TDISPLAY_S3
         int "Pixel clock frequency (MHz)"
-        range 1 20
+        range 1 80
         default 10
         help
-            Set the pixel clock frequency for the 8080 parallel bus.
+            Set the pixel clock frequency for the 8080 parallel bus. Higher values may be unstable.
 
     config LVGL_DISPLAY_SPI_CLOCK
         depends on LVGL_DISPLAY_TTGO_TDISPLAY
