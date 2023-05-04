@@ -20,6 +20,14 @@ menu "LVGL display configuration"
         help
             Set the pixel clock frequency for the 8080 parallel bus. Higher values may be unstable.
 
+    config LVGL_DISPLAY_TQUEUE_DEPTH
+        depends on LVGL_DISPLAY_TDISPLAY_S3 || LVGL_DISPLAY_TTGO_TDISPLAY
+        int "Transaction queue depth"
+        range 1 100
+        default 10
+        help
+            Transaction queue size, larger queue, higher throughput.
+
     config LVGL_DISPLAY_SPI_CLOCK
         depends on LVGL_DISPLAY_TTGO_TDISPLAY
         int "SPI clock frequency (MHz)"

@@ -32,6 +32,7 @@ static const char* TAG = "ttgo-tdisplay";
 #define LCD_PARAM_BITS       8
 
 #define LCD_BUFF_LINE_COUNT CONFIG_LVGL_DISPLAY_DRAW_BUFF_LEN
+#define LCD_TQUEUE_LENGTH   CONFIG_LVGL_DISPLAY_TQUEUE_DEPTH
 
 #ifdef CONFIG_LVGL_DISPLAY_MIRROR_X
   #define LCD_MIRROR_X true
@@ -91,7 +92,7 @@ namespace LVGLDisplay {
         .dc_gpio_num = PIN_NUM_DC,
         .spi_mode = 0,
         .pclk_hz = LCD_SPI_CLOCK_HZ,
-        .trans_queue_depth = 10,
+        .trans_queue_depth = LCD_TQUEUE_LENGTH,
         .on_color_trans_done = notify_lvgl_flush_ready,
         .user_ctx = &_display,
         .lcd_cmd_bits = LCD_CMD_BITS,

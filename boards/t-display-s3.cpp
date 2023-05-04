@@ -40,6 +40,7 @@ static const char* TAG = "t-display-s3";
 
 #define LCD_PIXEL_CLOCK_HZ  (CONFIG_LVGL_DISPLAY_PIXEL_CLOCK * 1000 * 1000)
 #define LCD_BUFF_LINE_COUNT CONFIG_LVGL_DISPLAY_DRAW_BUFF_LEN
+#define LCD_TQUEUE_LENGTH   CONFIG_LVGL_DISPLAY_TQUEUE_DEPTH
 
 #ifdef CONFIG_LVGL_DISPLAY_MIRROR_X
   #define LCD_MIRROR_X true
@@ -119,7 +120,7 @@ namespace LVGLDisplay {
     esp_lcd_panel_io_i80_config_t io_config = {
       .cs_gpio_num = PIN_NUM_CS,
       .pclk_hz = LCD_PIXEL_CLOCK_HZ,
-      .trans_queue_depth = 10,
+      .trans_queue_depth = LCD_TQUEUE_LENGTH,
       .on_color_trans_done = example_notify_lvgl_flush_ready,
       .user_ctx = &_display,
       .lcd_cmd_bits = LCD_CMD_BITS,

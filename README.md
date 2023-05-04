@@ -96,6 +96,7 @@ The display used by LVGL is chosen and configured by Kconfig. When using the ESP
 | `LVGL_DISPLAY_TDISPLAY_S3`  | `y`           |         | Select LilyGO T-Display-S3 display module                                                                                            |
 | `LVGL_DISPLAY_TTGO_TDISPLAY`  | `n`           |         | Select LilyGO TTGO-tdisplay display module                                                                                            |
 | `LVGL_DISPLAY_PIXEL_CLOCK`  | `10`          | `1-80`  | Set the pixel clock frequency for the 8080 parallel bus.                                                                              |
+| `LVGL_DISPLAY_TQUEUE_DEPTH`  | `10`          | `1-100`  | Set the length of the LCD transaction queue.                                                                              |
 | `LVGL_DISPLAY_DRAW_BUFF_LEN`| `20`          | `1-170` | Set the number of horizontal lines used as a draw buffer. Higher values use more memory. Usually this value should not be less than 20.|
 | `LVGL_DISPLAY_SPI_CLOCK`  | `20`          | `1-40`  | Set the SPI clock frequency for SPI based controllers bus.                                                                              |
 | `LVGL_DISPLAY_MIRROR_X`     | `n`           |         | Mirror X orientation on display                                                                                                      |
